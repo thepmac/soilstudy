@@ -14,9 +14,7 @@
         <h1>Soil Study</h1>
     </div>
     <div id="images">
-        <div id="scroll">
-            <img src="assets/images/01.jpg">
-        </div>
+        <div id="scroll"><img src="" alt="image scroll"></div>
     </div>
     <div id="info">
         <h2 id="contact">info@soilstudy.com<br />@soilstudy</h2>
@@ -25,55 +23,48 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const img = document.querySelector("#scroll img");
-        let images = [];
-        let currentIndex = 0;
-        let scrollPosition = 0; // continuous scroll accumulator
-        let targetIndex = 0;
-        const threshold = 200; // adjust for sensitivity
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            // Load JSON list
+            const response = await fetch("assets/images/images.json");
+            const images = await response.json();
 
-        // Smooth easing speed (lower = smoother)
-        const easing = 0.1;
+            const img = document.querySelector("#scroll img");
+            let currentIndex = 0;
 
-        fetch("assets/images/images.json")
-            .then(response => response.json())
-            .then(data => {
-                images = data;
-                img.src = images[0];
-
-                window.addEventListener("wheel", function (event) {
-                    event.preventDefault();
-                    scrollPosition += event.deltaY;
-
-                    // Update targetIndex continuously
-                    targetIndex = Math.round(scrollPosition / threshold);
-
-                    // Clamp within range
-                    if (targetIndex < 0) targetIndex = 0;
-                    if (targetIndex >= images.length) targetIndex = images.length - 1;
-                }, { passive: false });
-
-                // Smooth animation loop
-                function animate() {
-                    // Ease currentIndex towards targetIndex
-                    if (currentIndex !== targetIndex) {
-                        currentIndex += (targetIndex - currentIndex) * easing;
-
-                        // Snap close values
-                        if (Math.abs(currentIndex - targetIndex) < 0.01) {
-                            currentIndex = targetIndex;
-                        }
-
-                        img.src = images[Math.round(currentIndex)];
-                    }
-                    requestAnimationFrame(animate);
-                }
-                animate();
+            // Preload all images into browser cache
+            const preloaded = [];
+            images.forEach(src => {
+                const i = new Image();
+                i.src = src;
+                preloaded.push(i);
             });
+
+            // Set initial image
+            img.src = images[currentIndex];
+
+            // Accumulator for smooth scrolling
+            let scrollDelta = 0;
+            const threshold = 100; // adjust sensitivity
+
+            window.addEventListener("wheel", function (event) {
+                event.preventDefault(); // prevent page scroll
+                scrollDelta += event.deltaY;
+
+                if (scrollDelta >= threshold) {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    img.src = images[currentIndex];
+                    scrollDelta = 0;
+                } else if (scrollDelta <= -threshold) {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    img.src = images[currentIndex];
+                    scrollDelta = 0;
+                }
+            }, { passive: false });
+        } catch (err) {
+            console.error("Error loading images.json:", err);
+        }
     });
 </script>
-
-
 
 </html>
