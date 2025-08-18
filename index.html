@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Study</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="title">
+        <h1>Soil Study</h1>
+    </div>
+    <div id="images">
+        <div id="scroll">
+            <img src="">
+        </div>
+    </div>
+    <div id="info">
+        <h2 id="contact">info@soilstudy.com<br />@soilstudy</h2>
+        <h2 id="time"></h2>
+    </div>
+</body>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const img = document.querySelector("#scroll img");
+        let images = [];
+        let currentIndex = 0;
+        let scrollPosition = 0; // continuous scroll accumulator
+        let targetIndex = 0;
+        const threshold = 200; // adjust for sensitivity
+
+        // Smooth easing speed (lower = smoother)
+        const easing = 0.1;
+
+        fetch("assets/images/images.json")
+            .then(response => response.json())
+            .then(data => {
+                images = data;
+                img.src = images[0];
+
+                window.addEventListener("wheel", function (event) {
+                    event.preventDefault();
+                    scrollPosition += event.deltaY;
+
+                    // Update targetIndex continuously
+                    targetIndex = Math.round(scrollPosition / threshold);
+
+                    // Clamp within range
+                    if (targetIndex < 0) targetIndex = 0;
+                    if (targetIndex >= images.length) targetIndex = images.length - 1;
+                }, { passive: false });
+
+                // Smooth animation loop
+                function animate() {
+                    // Ease currentIndex towards targetIndex
+                    if (currentIndex !== targetIndex) {
+                        currentIndex += (targetIndex - currentIndex) * easing;
+
+                        // Snap close values
+                        if (Math.abs(currentIndex - targetIndex) < 0.01) {
+                            currentIndex = targetIndex;
+                        }
+
+                        img.src = images[Math.round(currentIndex)];
+                    }
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            });
+    });
+</script>
+
+
+
+</html>
+
+
+
+
+<!--
+
+            <img class="marquee-image" src="assets/images/01.jpg">
+            <img class="marquee-image" src="assets/images/02.jpg">
+            <img class="marquee-image" src="assets/images/03.jpg">
+            <img class="marquee-image" src="assets/images/04.jpg">
+            <img class="marquee-image" src="assets/images/05.jpg">
+            <img class="marquee-image" src="assets/images/06.jpg">
+            <img class="marquee-image" src="assets/images/07.jpg">
+            <img class="marquee-image" src="assets/images/08.jpg">
+            <img class="marquee-image" src="assets/images/09.jpg">
+            <img class="marquee-image" src="assets/images/10.jpg">
+            <img class="marquee-image" src="assets/images/11.jpg">
+            <img class="marquee-image" src="assets/images/12.jpg">
+            <img class="marquee-image" src="assets/images/13.jpg">
+            <img class="marquee-image" src="assets/images/14.jpg">
+            <img class="marquee-image" src="assets/images/15.jpg">
+            <img class="marquee-image" src="assets/images/16.jpg">
+            <img class="marquee-image" src="assets/images/17.jpg">
+            <img class="marquee-image" src="assets/images/18.jpg">
+            <img class="marquee-image" src="assets/images/19.jpg">
+
+-->
