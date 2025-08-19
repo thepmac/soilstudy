@@ -3,6 +3,22 @@
     --text-color: #000000;
 }
 
+@media (max-width: 800px) {
+
+    h1,
+    h2 {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 801px) {
+
+    h1,
+    h2 {
+        font-size: 24px;
+    }
+}
+
 html {
     scrollbar-gutter: stable overlay;
 }
@@ -76,7 +92,6 @@ h2 {
     font-family: "adobe-kis", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 24px;
     -webkit-text-stroke-width: 0.4px;
     -webkit-text-stroke-color: black;
     letter-spacing: 0.2px;
