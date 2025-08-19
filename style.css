@@ -76,9 +76,20 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    font-family: "Gothic No. 6";
-    font-weight: normal;
+    font-family: "adobe-kis", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     font-size: 24px;
+    -webkit-text-stroke-width: 0.4px;
+    -webkit-text-stroke-color: black;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+}
+
+em {
+    font-family: "adobe-kis", sans-serif;
+    font-weight: 400;
+    font-style: italic;
 }
 
 ::selection {
