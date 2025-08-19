@@ -1,8 +1,6 @@
 :root {
-    --bg-color-marquee: #ffffff;
     --bg-color: #ffffff;
-    --text-color: #160B04;
-    --gap:
+    --text-color: #000000;
 }
 
 html {
@@ -15,37 +13,13 @@ body {
     margin: auto;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden; /* disables scrolling */
-}
-
-/*
-#marquee {
-    display: block;
-    width: 100vw;
-    height: 90dvh;
-    position: relative;
-    background-color: var(--bg-color-marquee);
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-#marquee::-webkit-scrollbar {
-    display: none;
-}
-
-#marquee img {
+html,
+body {
     height: 100%;
-    width: auto;
-    display: inline-block;
-    margin-left: -4px;
+    margin: 0;
+    overflow: hidden;
+    /* disables scrolling */
 }
-*/
 
 body {
     background-color: var(--bg-color);
@@ -94,14 +68,7 @@ body {
     color: var(--text-color);
 }
 
-h1 {
-    margin: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
+h1,
 h2 {
     margin: auto;
     position: absolute;
@@ -109,4 +76,22 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    font-family: "Gothic No. 6";
+    font-weight: normal;
+    font-size: 24px;
+}
+
+::selection {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+::-moz-selection {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
 }

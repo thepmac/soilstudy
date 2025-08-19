@@ -25,14 +25,13 @@
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         try {
-            // Load JSON list
             const response = await fetch("assets/images/images.json");
             const images = await response.json();
 
             const img = document.querySelector("#scroll img");
-            let currentIndex = 0;
 
-            // Preload all images into browser cache
+            let currentIndex = Math.floor(Math.random() * images.length);
+
             const preloaded = [];
             images.forEach(src => {
                 const i = new Image();
@@ -40,15 +39,13 @@
                 preloaded.push(i);
             });
 
-            // Set initial image
             img.src = images[currentIndex];
 
-            // Accumulator for smooth scrolling
             let scrollDelta = 0;
-            const threshold = 100; // adjust sensitivity
+            const threshold = 100;
 
             window.addEventListener("wheel", function (event) {
-                event.preventDefault(); // prevent page scroll
+                event.preventDefault();
                 scrollDelta += event.deltaY;
 
                 if (scrollDelta >= threshold) {
@@ -61,6 +58,12 @@
                     scrollDelta = 0;
                 }
             }, { passive: false });
+
+            document.addEventListener("click", function () {
+                currentIndex = (currentIndex + 1) % images.length;
+                img.src = images[currentIndex];
+            });
+
         } catch (err) {
             console.error("Error loading images.json:", err);
         }
