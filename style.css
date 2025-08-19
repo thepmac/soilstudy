@@ -46,10 +46,7 @@ body {
     height: 100%;
     display: flex;
     justify-content: center;
-    /* horizontal center */
     align-items: center;
-    /* vertical center */
-    /* optional: overflow: hidden; */
 }
 
 #scroll img {
@@ -57,7 +54,7 @@ body {
     max-height: 100%;
     width: auto;
     height: auto;
-    object-fit: contain;
+    object-fit: fill;
     display: block;
 }
 
@@ -90,6 +87,18 @@ em {
     font-family: "adobe-kis", sans-serif;
     font-weight: 400;
     font-style: italic;
+}
+
+a:link,
+a:active,
+a:visited {
+    color: var(--text-color);
+    text-decoration: underline;
+}
+
+a:hover {
+    color: var(--text-color);
+    text-decoration: none;
 }
 
 ::selection {

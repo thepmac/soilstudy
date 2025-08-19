@@ -17,21 +17,26 @@
         <div id="scroll"><img src="" alt="image scroll"></div>
     </div>
     <div id="info">
-        <h2 id="contact">info@soilstudy.com<br />@soilstudy</h2>
+        <h2 id="contact"><a href="mailto:info@soilstudy.com">info@soilstudy.com</a><br /><a
+                href="https://www.instragram.com/soilstudy" target="_blank">@soilstudy</a></h2>
     </div>
 </body>
+
 
 
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         try {
+            // Load JSON list
             const response = await fetch("assets/images/images.json");
             const images = await response.json();
 
             const img = document.querySelector("#scroll img");
 
+            // Random initial index
             let currentIndex = Math.floor(Math.random() * images.length);
 
+            // Preload all images
             const preloaded = [];
             images.forEach(src => {
                 const i = new Image();
@@ -39,13 +44,18 @@
                 preloaded.push(i);
             });
 
+            // Set initial image
             img.src = images[currentIndex];
 
+            // Scroll accumulator
             let scrollDelta = 0;
-            const threshold = 100;
+            const threshold = 100; // adjust sensitivity
 
+            // ----------------------
+            // Desktop wheel scrolling
+            // ----------------------
             window.addEventListener("wheel", function (event) {
-                event.preventDefault();
+                event.preventDefault(); // prevent page scroll
                 scrollDelta += event.deltaY;
 
                 if (scrollDelta >= threshold) {
@@ -59,9 +69,41 @@
                 }
             }, { passive: false });
 
-            document.addEventListener("click", function () {
-                currentIndex = (currentIndex + 1) % images.length;
-                img.src = images[currentIndex];
+            // ----------------------
+            // Mobile touch scrolling
+            // ----------------------
+            let touchStartY = 0;
+
+            window.addEventListener("touchstart", function (event) {
+                touchStartY = event.touches[0].clientY;
+            }, { passive: true });
+
+            window.addEventListener("touchmove", function (event) {
+                const touchCurrentY = event.touches[0].clientY;
+                const deltaY = touchStartY - touchCurrentY;
+                scrollDelta += deltaY;
+
+                if (scrollDelta >= threshold) {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    img.src = images[currentIndex];
+                    scrollDelta = 0;
+                } else if (scrollDelta <= -threshold) {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    img.src = images[currentIndex];
+                    scrollDelta = 0;
+                }
+
+                touchStartY = touchCurrentY; // reset for next move
+            }, { passive: false });
+
+            // ----------------------
+            // Click anywhere except <a> tags
+            // ----------------------
+            document.addEventListener("click", function (event) {
+                if (!event.target.closest("a")) {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    img.src = images[currentIndex];
+                }
             });
 
         } catch (err) {
